@@ -1,0 +1,27 @@
+try {
+		RandomAccessFile fp=new RandomAccessFile("testtext.txt","r");
+		
+		byte[] buff= new  byte[126];
+		fp.read(buff, 0, 2);
+		System.out.println(	(char)buff[0] + "" +  (char)buff[1]);
+		fp.seek(1);
+		fp.read(buff, 0, 2);
+		System.out.println(	(char)buff[0] + "" +  (char)buff[1]);
+		fp.seek(2);
+		fp.read(buff, 0, 2);
+		System.out.println(	(char)buff[0] + "" +  (char)buff[1]);
+		
+		
+		
+		fp.seek(10);
+		fp.read(buff, 0, 2);
+		System.out.println(	(char)buff[0] + "" +  (char)buff[1]);
+		fp.seek(25);
+		fp.read(buff, 0, 2);
+		System.out.println(	(char)buff[0] + "" +  (char)buff[1]);
+		fp.seek(26);
+		fp.read(buff, 0, 4);
+		System.out.println(	(char)buff[0] + "" +  (char)buff[1]);
+		
+	} catch (IOException e) {
+		e.printStackTrace();}
