@@ -1,0 +1,121 @@
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+
+
+public class RosterFile extends RandomAccessFile{
+
+	
+	public RosterFile(String loc, int numberofrecords, int lengthofarecord) throws FileNotFoundException
+	{
+		
+		super("testtext.txt", "rw");
+	
+		
+		
+	}
+	
+	public void write(PlayerRecord pr)
+	{
+		if(pr.validrecord == true)
+		{
+			int lineID = (pr.getID()*71);
+			  try {
+					seek(lineID);
+					 
+					 write(pr.getPlayer().getBytes());
+					 
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					 System.out.println( "no record ");
+					
+				}
+			
+		}
+		
+	}
+	
+	public String getString(PlayerRecord whichrecord)
+    {
+   
+        byte[] buff= new  byte[73];
+        int lineID = (whichrecord.getID()*71);
+        String therecord = "";
+        String bufftostring = "";
+    	  try {
+			seek(lineID);
+			 read(buff, 0, 73);
+			 bufftostring = recordToString(buff);
+			 therecord += "Player ID: " + bufftostring.substring(0,5);
+			 therecord += "Player Name: " + bufftostring.substring(5, 31);
+			 therecord += "Player Team: " + bufftostring.substring( 31, 57);
+			 therecord += "Player Skill: " + bufftostring.substring( 57, 62);
+			 therecord += "Player Date: " + bufftostring.substring( 62, 71);
+			 
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			 System.out.println( "no record ");
+			
+		}
+        
+          System.out.println( "the record " + therecord);
+          System.out.println( recordToString(buff).length());
+          
+          
+    	return "the record " + recordToString(buff);
+    	
+    }
+	public String findrecordbyid(int whichrecord)
+    {
+   
+        byte[] buff= new  byte[73];
+        int lineID = ((whichrecord - 1) * 71);
+        String therecord = "";
+        String bufftostring = "";
+        PlayerRecord pr = new PlayerRecord(1,"","",1,"");
+    	  try {
+			seek(lineID);
+			 read(buff, 0, 73);
+			 bufftostring = recordToString(buff);
+			 
+			 
+			 
+			 
+			 pr = new PlayerRecord(Integer.parseInt(bufftostring.substring(3,5)),bufftostring.substring(5,31),bufftostring.substring(31,57),Integer.parseInt(bufftostring.substring(60,62)),bufftostring.substring(62,71));
+
+
+			 
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			 System.out.println( "no record ");
+			
+		}
+        
+		if(pr.validrecord == true)
+		{
+			
+			System.out.println( "the record " + pr.getPlayer());
+	          //System.out.println( recordToString(buff).length());
+		}else{
+			
+			System.out.println( "Not a valid record: " + pr.getPlayer());
+		}
+          
+          
+          
+    	return "the record " + recordToString(buff);
+    	
+    }
+public static String recordToString(byte[] bytestoread)
+{
+	String tempstring = "";
+	for (byte el : bytestoread){tempstring += (char)el;}
+	return tempstring;
+	}
+	
+	
+	
+}
