@@ -1,0 +1,260 @@
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.util.Scanner;
+
+
+public class day2 {
+
+	public static int listening;
+	public static int tempid;
+	public static String tempname;
+	public static String tempteam;
+	public static int tempskill;
+	public static String tempdate;
+	public static RosterFile roster;
+public static RandomAccessFile raf;
+    
+    public static boolean checkname(Scanner scanner)
+    {
+        boolean isvalid;
+        System.out.println("enter a player name max 26 letters");
+        String newinput = scanner.next();
+        tempname = newinput;
+        listening = 3;
+        return true;
+    }
+    public static boolean checkteam(Scanner scanner)
+    {
+        boolean isvalid;
+        listening = 4;
+        System.out.println("enter a team name max 26 letters");
+        String newinput = scanner.next();
+        tempteam = newinput;
+        return true;
+    }
+    public static boolean checkskill(Scanner scanner)
+    {
+        boolean isvalid;
+        listening = 5;
+        System.out.println("enter a skill between 0 and 99");
+        String newinput = scanner.next();
+        try {
+            int newint = Integer.parseInt(newinput);
+            if(newint > 0 && newint < 100)
+            { 
+                isvalid = true;
+                tempskill = newint;
+            
+            }
+            
+        } catch (Exception name) {
+             System.out.println("skill needs to be an integer");
+             
+        } 
+        return true;
+    }
+    public static boolean checkdate(Scanner scanner)
+    {
+        boolean isvalid;
+
+        System.out.println("enter a date in 12mar2005 format");
+        String newinput = scanner.next();
+        listening = 0;
+        tempdate = newinput;
+        return true;
+    }
+    public static int validID(Scanner scanner)
+    {
+        int isvalid = 0;
+        System.out.println("enter ID between 1-20");
+        String newinput = scanner.next();
+        System.out.println(newinput + "new input");
+        try {
+            System.out.println("am I tryibng?");
+            int newint = Integer.parseInt(newinput);
+            System.out.println((newint + 1) + "am I tryibng?");
+            if(newint > 0 && newint < 21)
+            { 
+            	
+            	tempid = newint;
+            	listening = 2;
+                isvalid = 1;
+
+                
+            
+            }else {  System.out.println("Id needs to be between 1 and 20");}
+            
+        } catch (Exception name) {
+             System.out.println("Id needs to be an integer");
+             
+        } 
+        
+        
+        return isvalid;
+    }
+    
+    public static void checkifrecordexists()
+    {
+    	listening = 0;
+    	
+    }
+    
+    public static void listenfornewrecord(Scanner sc)
+    {
+    	 listening = 1;
+    	
+    	 
+    	 
+    	 
+    	 
+    	while(listening >= 1) {
+    	   switch (listening) {
+           case 1:  validID(sc);
+                    break;
+           case 2:  checkname(sc);
+                    break;
+           case 3:  checkteam(sc);
+                    break;
+           case 4:  checkskill(sc);
+                    break;
+           case 5:  checkdate(sc) ;
+                    break;
+       
+           default: 
+                    break;
+       }
+    	}
+    	PlayerRecord pr = new PlayerRecord(tempid,tempname,tempteam,tempskill,tempdate);
+    	//roster.write(pr);
+    	if(pr.validrecord == true)
+    	{try {
+    		int lineID = ((pr.getID() - 1)*71);
+    		roster.seek(lineID);
+    		
+			roster.write(pr.getPlayerAsBytes().getBytes());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}}
+    	else
+    	{System.out.println( "Not a valid record: " + pr.errorstring);}
+    	
+    }
+
+    public static void CreateFile()
+    {
+    	System.out.println( "I needed to make a file");
+    	try {
+    		
+    		RandomAccessFile raf = new RandomAccessFile("testtext.txt","rw");
+    		roster = new RosterFile("testtext.txt",20,72);
+    	int count = 0;
+  	  	String countstring = "";
+  	  	String[] placeholder = new String[20];
+  	  	String plh2 = "";
+  	  countstring = "" + 99999 + "qwertyuioplkjhgfdsazxcvbnm" + "qwertyuioplkjhgfdsazxcvbnm" + 99999 + "qwertyuio";
+    	while(count < 20)
+    	{	
+    		placeholder[count] = countstring;
+    		count++;
+
+			
+    	}
+
+    	for(String el: placeholder)
+    	{raf.writeBytes(el);}
+    	
+	           
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		 try {
+			roster = new RosterFile("testtext.txt",20,72);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
+    public static void ListenforInput()
+    {
+    	Scanner sc = new Scanner(System.in);
+        
+        
+        System.out.println("new or old record ");
+       String newinput = sc.next();
+       if( newinput.toLowerCase().substring(0,1).equals( "n"))
+       {
+           
+           listenfornewrecord(sc);
+           ListenforInput();
+       }
+      
+       else if ( newinput.toLowerCase().substring(0,1).equals( "o"))
+       {
+       	System.out.println("which ID ");
+       	 int newint  = sc.nextInt();
+       	
+       	roster.findrecordbyid(newint);
+       	ListenforInput();
+
+		}
+       else if ( newinput.toLowerCase().substring(0,1).equals( "e"))
+       {
+       	   System.out.println("goodbye");
+       }
+    	
+    	
+    }
+    
+    
+    public static void main(String[] args) throws FileNotFoundException{
+
+    	//CreateFile();
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	try{
+    	raf = new RandomAccessFile("testtext.txt","r");
+    		   //roster = new RosterFile("testtext.txt",20,72);
+    		  
+    	}catch(Exception e){
+    	  	System.out.println( "I needed to make a file");
+    		CreateFile();
+    	//	 raf = new RandomAccessFile("testtext.txt","rw");
+    		 //roster = new RosterFile("testtext.txt",20,72);
+    	}
+    	ListenforInput();
+    	
+        
+            
+
+        
+}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+///
+
+
+
