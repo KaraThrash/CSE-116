@@ -35,26 +35,26 @@ public static RandomAccessFile raf;
         tempteam = newinput;
         return true;
     }
-    public static boolean checkskill(Scanner scanner)
+    public static void checkskill(Scanner scanner)
     {
-        boolean isvalid;
-        listening = 5;
+        
+        
         System.out.println("enter a skill between 0 and 99");
         String newinput = scanner.next();
         try {
             int newint = Integer.parseInt(newinput);
             if(newint > 0 && newint < 100)
             { 
-                isvalid = true;
+               
                 tempskill = newint;
-            
+                listening = 5;
             }
             
         } catch (Exception name) {
              System.out.println("skill needs to be an integer");
-             
+             listening = 4;
         } 
-        return true;
+  
     }
     public static boolean checkdate(Scanner scanner)
     {
@@ -71,11 +71,11 @@ public static RandomAccessFile raf;
         int isvalid = 0;
         System.out.println("enter ID between 1-20");
         String newinput = scanner.next();
-        System.out.println(newinput + "new input");
+       
         try {
-            System.out.println("am I tryibng?");
+      
             int newint = Integer.parseInt(newinput);
-            System.out.println((newint + 1) + "am I tryibng?");
+        
             if(newint > 0 && newint < 21)
             { 
             	
@@ -104,11 +104,6 @@ public static RandomAccessFile raf;
     
     public static void listenfornewrecord(Scanner sc)
     {
-    	 listening = 1;
-    	
-    	 
-    	 
-    	 
     	 
     	while(listening >= 1) {
     	   switch (listening) {
@@ -187,11 +182,11 @@ public static RandomAccessFile raf;
     	Scanner sc = new Scanner(System.in);
         
         
-        System.out.println("new or old record ");
+        System.out.println("new or old record, test program, or end? ");
        String newinput = sc.next();
        if( newinput.toLowerCase().substring(0,1).equals( "n"))
        {
-           
+    	   listening = 1;
            listenfornewrecord(sc);
            ListenforInput();
        }
@@ -209,10 +204,47 @@ public static RandomAccessFile raf;
        {
        	   System.out.println("goodbye");
        }
-    	
+       else if ( newinput.toLowerCase().substring(0,1).equals( "t"))
+       {
+    	   System.out.println("testing");
+    	   UseTestMethods();
+    		ListenforInput();
+       }
+      
     	
     }
-    
+    public static void UseTestMethods()
+    {
+
+
+    	try {
+    		
+    		helper(new PlayerRecord(1, "abc", "def", 55, "today"));
+    		
+    			helper(new PlayerRecord(2, "abcdefghijklmnopqrstuvwxyzTOO_LONG", "def", 66, "today"));
+    		
+    		helper(new PlayerRecord(3, "abc", "def", 55, "today"));
+    		helper(new PlayerRecord(7, "abc", "def", 21, "today"));
+    		helper(new PlayerRecord(6, "abc", "def", 55, "today"));
+    		helper(new PlayerRecord(4, "abc", "def", -9, "today"));
+    		helper(new PlayerRecord(3, "abc", "def", 55, "today"));
+    		helper(new PlayerRecord(2, "abc", "def", -22, "today"));
+    		helper(new PlayerRecord(5, "abc", "def", 109, "today"));
+    		helper(new PlayerRecord(-8, "abc", "def", 66, "today"));
+    		helper(new PlayerRecord(5, "abcdefghijklmnopqrstuvwxyzTOO_LONG", "def", 66, "today"));
+    		helper(new PlayerRecord(77, "abc", "def", 66, "today"));
+    		helper(new PlayerRecord(2, "abc", "def", 55, "today"));
+    		helper(new PlayerRecord(3, "abc", "def", 55, "today"));
+    		helper(new PlayerRecord(1, "abcdefghijklmnopqrstuvwxyzTOO_LONG", "def", 66, "today"));
+    		for (int i = 1; i < 11; i+=1)
+    		{
+    			testRead(i);
+    		}
+    		} catch (IOException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+    }
     
     public static void main(String[] args) throws FileNotFoundException{
 
@@ -225,8 +257,8 @@ public static RandomAccessFile raf;
     	
     	
     	try{
-    	raf = new RandomAccessFile("testtext.txt","r");
-    		   //roster = new RosterFile("testtext.txt",20,72);
+    		RandomAccessFile raf2 = new RandomAccessFile("testtext.txt","r");
+    		   roster = new RosterFile("testtext.txt",20,71);
     		  
     	}catch(Exception e){
     	  	System.out.println( "I needed to make a file");
@@ -234,15 +266,27 @@ public static RandomAccessFile raf;
     	//	 raf = new RandomAccessFile("testtext.txt","rw");
     		 //roster = new RosterFile("testtext.txt",20,72);
     	}
+    	
+    	
     	ListenforInput();
     	
         
             
 
         
+	}
+	private static void helper(PlayerRecord p) throws IOException
+	{
+		int id = p.getID();
+		roster.write(p);
+		System.out.println("Record written at " + id +" = " + p.getString());
+		System.out.println("     Record read back = " + roster.read(id));
+	}
+	private static void testRead(int id) throws IOException
+	{
+		System.out.println("     Test read = " + roster.read(id));
+	}
 }
-}
-
 
 
 
