@@ -19,11 +19,12 @@ public class RosterFile extends RandomAccessFile{
 	{
 		if(pr.validrecord == true)
 		{
-			int lineID = (pr.getID()*71);
+			int lineID = ((pr.getID() - 1) * 71);
+			   if(lineID < 0){lineID = 0;}
 			  try {
 					seek(lineID);
 					 
-					 write(pr.getPlayer().getBytes());
+					 write(pr.getPlayerAsBytes().getBytes());
 					 
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
@@ -40,7 +41,8 @@ public class RosterFile extends RandomAccessFile{
     {
    
         byte[] buff= new  byte[73];
-        int lineID = (whichrecord.getID()*71);
+        int lineID = ((whichrecord.getID() - 1) * 71);
+        if(lineID < 0){lineID = 0;}
         String therecord = "";
         String bufftostring = "";
     	  try {
@@ -67,11 +69,13 @@ public class RosterFile extends RandomAccessFile{
     	return "the record " + recordToString(buff);
     	
     }
-	public String findrecordbyid(int whichrecord)
+	public String read(int whichrecord)
     {
-   
+			if(whichrecord > 0 && whichrecord < 21)
+		{
         byte[] buff= new  byte[73];
         int lineID = ((whichrecord - 1) * 71);
+        if(lineID < 0){lineID = 0;}
         String therecord = "";
         String bufftostring = "";
         PlayerRecord pr = new PlayerRecord(1,"","",1,"");
@@ -107,7 +111,56 @@ public class RosterFile extends RandomAccessFile{
           
           
     	return "the record " + recordToString(buff);
-    	
+			}else{
+			return "No record: List is not that long";}
+    }
+	
+	public String findrecordbyid(int whichrecord)
+    {
+		if(whichrecord > 0 && whichrecord < 21)
+		{
+        byte[] buff= new  byte[73];
+        int lineID = ((whichrecord - 1) * 71);
+        if(lineID < 0){lineID = 0;}
+        
+        
+        String therecord = "";
+        String bufftostring = "";
+        PlayerRecord pr = new PlayerRecord(1,"","",1,"");
+    	  try {
+			seek(lineID);
+			 read(buff, 0, 73);
+			 bufftostring = recordToString(buff);
+			 
+			 
+			 
+			 
+			 pr = new PlayerRecord(Integer.parseInt(bufftostring.substring(3,5)),bufftostring.substring(5,31),bufftostring.substring(31,57),Integer.parseInt(bufftostring.substring(60,62)),bufftostring.substring(62,71));
+
+
+			 
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			 System.out.println( "no record ");
+			
+		}
+        
+		if(pr.validrecord == true)
+		{
+			
+			System.out.println( "the record " + pr.getPlayer());
+	          //System.out.println( recordToString(buff).length());
+		}else{
+			
+			System.out.println( "Not a valid record: " + pr.getPlayer());
+		}
+          
+          
+          
+    	return "the record " + recordToString(buff);
+		}	else{
+			return "No record: List is not that long";}
     }
 public static String recordToString(byte[] bytestoread)
 {
