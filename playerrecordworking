@@ -1,0 +1,184 @@
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+
+public class PlayerRecord {
+	public int ID;
+	public String name;
+	public String team;
+	public int skill;
+	public String date;
+	public String paddedID;
+	public String paddedname;
+	public String paddedteam;
+	public String paddedskill;
+	public String paddeddate;
+	public String errorstring;
+	public boolean validrecord;
+	public PlayerRecord(int a, String b, String c, int d, String e){
+
+	
+		ID = a;
+		name = b;
+		team = c;
+		skill = d;
+		date = e;
+		padrecord();
+		
+	}
+	
+	public void padrecord()
+	{
+		validrecord = true;
+		checkid(ID) ;
+		checkname(name) ;
+		checkteam(team) ;
+		checkskill(skill) ;
+		checkdate(date);
+		//return "" + ID + name + team + skill + date;
+	}
+	public void checkid(int newid){
+		if(newid > 0 && newid < 21)
+        { 
+			ID = newid;
+        }else{ 
+        	errorstring += " > Id needs to be between 1 and 20 < ";
+        	errorstring += " > You put: " + newid + " as the id < ";
+        	validrecord = false;
+        	}
+		String idstring = "" + ID;
+		if(idstring.length() > 5)
+		{
+	    	errorstring += " > Id too many characters in ID input< ";
+	    	errorstring += " > You put: " + newid + " as the id < ";
+        	validrecord = false;
+		}else{
+			if(idstring.length() < 2)
+			{ idstring = "0" + idstring;}
+			
+		while(idstring.length() < 5)
+		{idstring = "9" + idstring;}
+		}
+		paddedID = idstring;
+	
+		}
+	
+	
+	public void checkname(String newname)
+	{
+	
+		if(name.length() > 26)
+		{
+			name = name.substring(0,26);
+			errorstring += " > name too long, truncating name < ";
+			errorstring += " > You put: " + newname + " as the name < ";
+		}
+		paddedname = name.trim();
+		while(paddedname.length() < 26)
+		{paddedname += " ";}
+	
+	}
+	public void checkteam(String newteam)
+	{
+		if(newteam.length() > 26)
+		{
+			team = newteam.substring(0,26);
+			errorstring += " > Team name too long, truncating team name < ";
+			errorstring += " > You put: " + newteam + " as the team name < ";
+		}
+		paddedteam = newteam.trim();
+			while(paddedteam.length() < 26)
+			{paddedteam += " ";}
+		
+
+		
+	}
+	public void checkskill(int newskill)
+	{
+		String skillstring =  "" + newskill ;
+		if(newskill > 0 && newskill <= 99)
+        { 
+			if(skillstring.length() < 2)
+			{ skillstring = "0" + skillstring;}
+			while(skillstring.length() < 5)
+			{skillstring = "9" + skillstring;}
+			skill = newskill;
+			
+        }
+		else{
+			
+			errorstring += " > Skill needs to be between 0 and 99 <";
+			errorstring += " > You put: " + newskill + " as the skill value < ";
+        	validrecord = false;
+			
+			
+		}
+	
+		
+		paddedskill = skillstring;
+		
+	}
+	
+	
+	public  void checkdate(String newdate)
+	{
+		String tempstring = "";
+	
+		
+		if(newdate.toLowerCase().trim().equals("today"))
+		{
+			SimpleDateFormat draftformat = new SimpleDateFormat("YYYYMMDD");
+			tempstring = draftformat.format(new Date()); 
+		}else
+		{
+			tempstring = newdate;
+			while(tempstring.length() < 9)
+			{tempstring =  tempstring + " ";}
+			
+		}  
+		paddeddate = tempstring;
+		
+	}
+	
+	public String getTeam()
+	{return team;}
+	
+	public String getName()
+	{return name;}
+	
+	public String getDate()
+	{return date;}
+	
+	public int getID()
+	{
+		return ID;
+	}
+	public int getSkill()
+	{
+		return skill;
+	}
+	public String getPlayerAsBytes()
+	{
+		
+		return "" + paddedID + paddedname + paddedteam + paddedskill + paddeddate;
+	}
+	public String getPlayer()
+	{
+		
+		return 
+		"" + ID + "" + 
+		name + "" + 
+		team + "" + 
+		skill + "" + date;
+	}
+	public String getString()
+	{
+		
+		return 
+		"Player ID: " + ID + " Name: " + 
+		name.trim() + " Team name: " + 
+		team.trim() + " Skill Level: " + 
+		skill + " Draft Date: " + date;
+	}
+}
