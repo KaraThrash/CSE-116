@@ -18,18 +18,19 @@ public class PlayerRecord {
 	public boolean validrecord;
 	public PlayerRecord(int a, String b, String c, int d, String e){
 
+	
 		ID = a;
 		name = b;
 		team = c;
 		skill = d;
 		date = e;
-		validrecord = true;
 		padrecord();
+		
 	}
 	
 	public void padrecord()
 	{
-		
+		validrecord = true;
 		checkid(ID) ;
 		checkname(name) ;
 		checkteam(team) ;
@@ -38,7 +39,7 @@ public class PlayerRecord {
 		//return "" + ID + name + team + skill + date;
 	}
 	public void checkid(int newid){
-		if(newid > 0 && newid < 111)
+		if(newid > 0 && newid < 21)
         { 
 			ID = newid;
         }else{ 
@@ -72,14 +73,10 @@ public class PlayerRecord {
 			name = name.substring(0,26);
 			errorstring += " > name too long, truncating name < ";
 			errorstring += " > You put: " + newname + " as the name < ";
-		}else{
-	
-		paddedname = name.trim();
-			while(paddedname.length() < 26)
-			{paddedname += " ";}
 		}
-	
-		
+		paddedname = name.trim();
+		while(paddedname.length() < 26)
+		{paddedname += " ";}
 	
 	}
 	public void checkteam(String newteam)
@@ -89,11 +86,11 @@ public class PlayerRecord {
 			team = newteam.substring(0,26);
 			errorstring += " > Team name too long, truncating team name < ";
 			errorstring += " > You put: " + newteam + " as the team name < ";
-		}else{
-			paddedteam = newteam.trim();
+		}
+		paddedteam = newteam.trim();
 			while(paddedteam.length() < 26)
 			{paddedteam += " ";}
-		}
+		
 
 		
 	}
@@ -107,7 +104,7 @@ public class PlayerRecord {
 			while(skillstring.length() < 5)
 			{skillstring = "9" + skillstring;}
 			skill = newskill;
-			paddedskill = skillstring;
+			
         }
 		else{
 			
@@ -119,7 +116,7 @@ public class PlayerRecord {
 		}
 	
 		
-
+		paddedskill = skillstring;
 		
 	}
 	
@@ -129,9 +126,9 @@ public class PlayerRecord {
 		String tempstring = "";
 	
 		
-		if(newdate.toLowerCase().equals("today"))
+		if(newdate.toLowerCase().trim().equals("today"))
 		{
-			SimpleDateFormat draftformat = new SimpleDateFormat("YYYMMMDD");
+			SimpleDateFormat draftformat = new SimpleDateFormat("YYYYMMDD");
 			tempstring = draftformat.format(new Date()); 
 		}else
 		{
@@ -167,6 +164,15 @@ public class PlayerRecord {
 		return "" + paddedID + paddedname + paddedteam + paddedskill + paddeddate;
 	}
 	public String getPlayer()
+	{
+		
+		return 
+		"" + ID + "" + 
+		name + "" + 
+		team + "" + 
+		skill + "" + date;
+	}
+	public String getString()
 	{
 		
 		return 
