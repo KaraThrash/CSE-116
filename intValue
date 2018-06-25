@@ -1,0 +1,28 @@
+package Lab8;
+
+public class intValue {
+	double myvalue;
+	double mult;
+	double ad;
+	public intValue(double n){
+		myvalue = n;
+	}
+	public intValue multiply(intValue n) {
+		mult = n.getValue()*myvalue;
+		return toIntValue(mult);
+	}
+	
+	public intValue add(intValue n) {
+		ad = n.getValue() + myvalue;
+		return toIntValue(ad);
+	}
+	
+	public intValue toIntValue(double a) {
+		intValue qwer = new intValue(a);
+		return qwer;
+	}
+	
+	public double getValue(){
+		return myvalue;
+	}
+}
