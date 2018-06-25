@@ -1,0 +1,16 @@
+package Lab8;
+public class Main {
+	static double ing;
+
+	
+	public static void main(String[] args) {
+		double one = 987654321987.0;
+		double two = 321654987321.0;
+		intValue val1 = new intValue(one);
+		intValue val2 = new intValue(two);
+		intValue val3 = val1.add(val2);
+		intValue val4 = val1.multiply(val2);
+		System.out.println(val3.getValue());
+		System.out.println(val4.getValue());
+	}
+}
