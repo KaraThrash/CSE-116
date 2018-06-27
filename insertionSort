@@ -1,0 +1,50 @@
+package Lab6;
+
+public class InsertionSort {
+	
+	private static int[] insertionSort(int[] input){
+		
+	    int temp;
+		
+	    for (int i = 1; i < input.length; i++) {
+		    for(int j = i ; j > 0 ; j--){
+			    if(input[j] < input[j-1]){
+				    temp = input[j];
+				    input[j] = input[j-1];
+				    input[j-1] = temp;
+			    }
+		    }
+	    }
+	    return input;
+	}
+
+	
+	public static void main(String[] args) 
+	{
+		
+		long time1 = System.nanoTime();
+
+//		int size = 100;
+//		int size = 1000;
+//		int size = 10000;
+		int size = 100000;
+//		int size = 1000000;
+//		int size = 10000000;
+		
+		int low = 0;
+		int high = size - 1;
+		
+		int[] ArrayToBeSorted = new int[size];
+		
+		for (int i = 0; i < size; ++i)
+		{
+			ArrayToBeSorted[i] = ((int) Math.random( ));
+		}
+		
+		insertionSort(ArrayToBeSorted);
+		
+		long elapsed = System.nanoTime() - time1;
+
+		System.out.println(elapsed);
+	}
+}
