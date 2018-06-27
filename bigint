@@ -1,0 +1,65 @@
+
+public class inValue {
+
+	String myvalue;
+	double mult;
+	double ad;
+	public inValue(String n){
+		myvalue = n;
+	}
+	//public inValue multiply(inValue n) {
+		//mult = n.getValue()*myvalue;
+		//return toIntValue(mult);
+	//}
+	
+	public inValue add(inValue n) {
+		String mytempstring = myvalue;
+		String otherstring = n.getValue();
+		while(otherstring.length() < mytempstring.length())
+		{
+			otherstring = "0" + otherstring;
+	
+		}
+		while(otherstring.length() > mytempstring.length())
+		{
+			mytempstring = "0" + mytempstring;
+			
+		}
+		char[] stringsplit = mytempstring.toCharArray();
+		char[] stringsplit2 = otherstring.toCharArray();
+		
+		String newstring = "";
+		int carry = 0;
+		//int tempint = Integer.parseInt(String.valueOf(stringsplit[stringsplit.length - 1])) + Integer.parseInt(String.valueOf(stringsplit2[stringsplit2.length - 1])) ;
+		int tempint2 = 0;
+		int place = 0;
+		for ( int i = 0  ; i < stringsplit.length; i++)
+		{
+			
+			
+			
+			
+			
+			
+			tempint2 = (Integer.parseInt(String.valueOf(stringsplit[i ])) + Integer.parseInt(String.valueOf(stringsplit2[i ])) + carry);	
+			newstring = "" + newstring + tempint2;
+			
+			
+			if(tempint2 > 9){carry = 1;}else {carry = 0;}
+			//tempint += tempint2;
+		}
+	if(carry == 1){newstring = "1" + newstring; }
+		System.out.println(newstring);
+		return new inValue("" );
+	}
+	
+//
+//	public inValue toIntValue(double a) {
+//		inValue qwer = new inValue(a);
+//		return qwer;
+//	}
+	
+	public String getValue(){
+		return myvalue;
+	}
+}
